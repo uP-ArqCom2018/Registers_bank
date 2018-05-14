@@ -6,8 +6,8 @@ use ieee.numeric_std.all;
 
 ENTITY bank_reg IS
   GENERIC(
-    n : integer := 4;  -- cantidad de bits registros
-    cant : integer := 4);  -- cantidad de registros
+    n_reg : integer := 32;  -- cantidad de bits registros
+    bit_dir_reg : integer := 4);  -- cantidad de registros
     PORT(
       A_i : IN     std_logic_vector(n-1 downto 0);
       B_i : IN     std_logic_vector(n-1 downto 0);
@@ -19,7 +19,11 @@ ENTITY bank_reg IS
 END ENTITY bank_reg;
 
 ARCHITECTURE Behavioral OF bank_reg IS
-  -- put declarations here.
+ -- put declarations here.
+ -- Declaramos una matriz como memoria       
+TYPE ram_memory IS ARRAY ( 2**bit_dir_reg-1 downto 0 ) OF std_logic_vector(n_reg-1 downto 0);
+signal Memoria_ram: ram_memory;
+
 BEGIN
  
  
