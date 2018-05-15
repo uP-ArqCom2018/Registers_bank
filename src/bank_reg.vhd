@@ -6,43 +6,39 @@ use ieee.numeric_std.all;
 
 ENTITY bank_reg IS
   GENERIC(
-    n_reg : integer := 32;  -- cantidad de bits registros
-    bit_dir_reg : integer := 4);  -- cantidad de registros
+    n_reg : integer := 64;  -- cantidad de bits registros
+    bit_dir_reg : integer := 5);  -- cantidad de bits de direccionamiento a registros
     PORT(
-      A_i : IN     std_logic_vector(n-1 downto 0);
-      B_i : IN     std_logic_vector(n-1 downto 0);
-      C_i : IN     std_logic_vector(n-1 downto 0);    
-      R_W_i: IN		std_logic;
+      A_i : IN     std_logic_vector(bit_dir_reg-1 downto 0);
+      B_i : IN     std_logic_vector(bit_dir_reg-1 downto 0);
+      C_i : IN     std_logic_vector(bit_dir_reg-1 downto 0);    
+      Reg_W_i: IN		std_logic;
       CLK_i : IN     std_logic;
-      W_c_i : IN     std_logic_vector(n-1 downto 0);
-      R_a_o : OUT    std_logic_vector(n-1 downto 0);
-      R_b_o : OUT    std_logic_vector(n-1 downto 0))
+      W_c_i : IN     std_logic_vector(n_reg-1 downto 0);
+      R_a_o : OUT    std_logic_vector(n_reg-1 downto 0);
+      R_b_o : OUT    std_logic_vector(n_reg-1 downto 0))
 END ENTITY bank_reg;
 
 ARCHITECTURE Behavioral OF bank_reg IS
- -- put declarations here.
  -- Declaramos una matriz como memoria       
 TYPE ram_memory IS ARRAY ( 2**bit_dir_reg-1 downto 0 ) OF std_logic_vector(n_reg-1 downto 0);
 signal Memoria_ram: ram_memory;
-
+SIGNAL rst : std_logic <= '0';  -- senial interna de reset
+	
 BEGIN
 
 Registros : PROCESS (CLK_i, rst) IS
-  -- Put constant and variable declarations here.
 BEGIN
   IF (rst = '1') THEN
-    -- Put reset assignments here.
   ELSIF (rising_edge(CLK_i))  THEN
-    -- Put clocked assignments here. 
+	R_a_o <= ram_memory(to_integer(unsigned(A_i)));  	  
+    R_b_o <= ram_memory(to_integer(unsigned(B_i)));
     
-    
-    
+    IF (Reg_W_i = '1') THEN
+    	ram_memory(to_integer(unsigned(C_i))) <= W_c_i; 
+   	END IF;	 
   END IF;
 END PROCESS Registros;
-
- 
- 
-  -- put concurrent statements here.
 END ARCHITECTURE Behavioral; -- Of entity bank_reg
 
  
