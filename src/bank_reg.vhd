@@ -31,11 +31,11 @@ BEGIN
 Registros : PROCESS (CLK_i) IS
 BEGIN
   IF (rising_edge(CLK_i))  THEN
-	  R_a_o <= ram_memory(to_integer(unsigned(A_i)));  	  
-    R_b_o <= ram_memory(to_integer(unsigned(B_i)));
+	  R_a_o <= Memoria_ram(to_integer(unsigned(A_i)));  	  
+    R_b_o <= Memoria_ram(to_integer(unsigned(B_i)));
     
     IF (Reg_W_i = '1') THEN
-    	ram_memory(to_integer(unsigned(C_i))) <= W_c_i; 
+    	Memoria_ram(to_integer(unsigned(C_i))) <= W_c_i; 
    	END IF;	 
   END IF;
 END PROCESS Registros;
