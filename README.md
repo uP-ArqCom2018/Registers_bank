@@ -4,7 +4,7 @@
 	*Postemsky Marcos
 
 ## Trabajo Práctico Nº2 
-El Release TP2 contiene cada uno de los archivos que corresponden a dicho práctico. Puede encontrarse en el [link-TP2] (https://github.com/LMproyects/ArqComp2018/releases/tag/TP2)
+El Release TP2 contiene cada uno de los archivos que corresponden a dicho práctico. Puede encontrarse en el [link-TP2](https://github.com/LMproyects/ArqComp2018/releases/tag/TP2)
 
 ## Banco de registros
 Dentro de la carpeta src "bank_reg.vhd" describe el comportamiento del banco de registros, y dentro de la carpeta test_src se encuentra "bank_reg_tb.vhd", vhdl que describe el Test Bench utilizado para comprobar el funcionamiento del banco de registros.
