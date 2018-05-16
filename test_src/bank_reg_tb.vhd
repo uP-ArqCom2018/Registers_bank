@@ -30,7 +30,8 @@ CONSTANT bit_dir_reg : integer := 5;
 --CONSTANT clk_period : ingeger := 10;  -- 10 ns -> 100 MHz
 signal A_i,B_i,C_i: std_logic_vector(bit_dir_reg-1 downto 0);
 signal W_c_i, R_a_o, R_b_o: std_logic_vector(n_reg-1 downto 0);
-signal CLK_i, Reg_W_i: std_logic;
+signal CLK_i, Reg_W_i: std_logic;    
+signal R_a_aux, R_b_aux: std_logic_vector(n_reg-1 downto 0);
 
 BEGIN
   -- put concurrent statements here.
@@ -51,7 +52,7 @@ end process;
 
 stimul_proc: process
   variable errors: boolean := false;  -- variable para detectar errores
-  signal R_a_aux, R_b_aux: std_logic_vector(n_reg-1 downto 0); -- variables que se usan en stimul_proc
+  --variable R_a_aux, R_b_aux: std_logic_vector(n_reg-1 downto 0); -- variables que se usan en stimul_proc
 begin
 
   -- Se coloca un valor conocido en los registros.
