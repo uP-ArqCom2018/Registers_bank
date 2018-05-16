@@ -51,7 +51,7 @@ end process;
 
 stimul_proc: process
   variable errors: boolean := false;  -- variable para detectar errores
-  variable R_a_aux, R_b_aux: std_logic_vector(n_reg-1 downto 0); -- variables que se usan en stimul_proc
+  signal R_a_aux, R_b_aux: std_logic_vector(n_reg-1 downto 0); -- variables que se usan en stimul_proc
 begin
 
   -- Se coloca un valor conocido en los registros.
@@ -70,10 +70,12 @@ begin
   FOR i IN 0 TO 2**bit_dir_reg-1 LOOP
     A_i <= std_logic_vector(to_unsigned(i,bit_dir_reg)); -- direccion que se quiere leer
     B_i <= std_logic_vector(to_unsigned(i,bit_dir_reg)); -- direccion que se quiere leer
+
+    R_a_aux <= std_logic_vector(to_unsigned(i,n_reg)); -- Se almacena el valor que deberia haber en la salida cuando se lee el registro
+    R_b_aux <= std_logic_vector(to_unsigned(i,n_reg));
+    
     wait for 15 ns;
     
-    R_a_aux := std_logic_vector(to_unsigned(A_i,n_reg)); -- Se almacena el valor que deberia haber en la salida cuando se lee el registro
-    R_b_aux := std_logic_vector(to_unsigned(B_i,n_reg));
     
     if R_a_o /= R_a_aux then -- se controla que el valor leido sea correcto
     	 assert false
