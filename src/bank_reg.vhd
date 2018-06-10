@@ -14,7 +14,8 @@ ENTITY bank_reg IS
       B_i : IN     std_logic_vector(bit_dir_reg-1 downto 0);
       C_i : IN     std_logic_vector(bit_dir_reg-1 downto 0);    
       Reg_W_i: IN		std_logic;
-      CLK_i : IN     std_logic;
+      -- CLK_i : IN     std_logic;  -- Se propone eliminar el reloj, ya que registra las entradas y no permite que el uP funcione en un solo clock por instruccion
+      RST_i: IN std_logic;
       W_c_i : IN     std_logic_vector(n_reg-1 downto 0);
       R_a_o : OUT    std_logic_vector(n_reg-1 downto 0);
       R_b_o : OUT    std_logic_vector(n_reg-1 downto 0)
@@ -28,10 +29,12 @@ signal Memoria_ram: ram_memory;
 	
 BEGIN
 
-Registros : PROCESS (CLK_i) IS
+Registros : PROCESS (RST_i,A_i,B_i,C_i,Reg_W_i,W_c_i) IS
 BEGIN
-  IF (rising_edge(CLK_i))  THEN
-	  R_a_o <= Memoria_ram(to_integer(unsigned(A_i)));  	  
+  IF (RST_i='0')  THEN
+      Memoria_ram<= (OTHERS=>std_logic_vector(to_unsigned(0,n_reg)));
+  ELSE
+	R_a_o <= Memoria_ram(to_integer(unsigned(A_i)));  	  
     R_b_o <= Memoria_ram(to_integer(unsigned(B_i)));
     
     IF (Reg_W_i = '1') THEN

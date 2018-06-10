@@ -19,7 +19,7 @@ B [bit_dir_reg-1 : 0]| IN | Dirección en memoria del registro R_b_o
 C [bit_dir_reg-1: 0]| IN | Dirección de escritura en memoria (banco de registros)
 Reg_W_i | IN | Señal de escritura en dirección C de la memoria del dato W_c_i
 W_c_i [n_reg-1 : 0]| IN | Dato de escritura en memoria
-CLK_i| IN | Reloj de sincronización
+RST_i| IN | Reset del banco de registros, coloca todos los registros en 0.
 R_a_o [n_neg-1 : 0]| OUT | Registro de salida de la dirección de memoria A
 R_b_o [n_neg-1 : 0]| OUT | Registro de salida de la dirección de memoria B
 
