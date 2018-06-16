@@ -28,17 +28,18 @@ signal Memoria_ram: ram_memory;
 	
 BEGIN
 
-Registros : PROCESS (CLK_i) IS
+Registros : PROCESS (CLK_i,C_i,Reg_W_i,W_c_i) IS
 BEGIN
-  IF (rising_edge(CLK_i))  THEN
-	  R_a_o <= Memoria_ram(to_integer(unsigned(A_i)));  	  
-    R_b_o <= Memoria_ram(to_integer(unsigned(B_i)));
-    
-    IF (Reg_W_i = '1') THEN
+  IF (rising_edge(CLK_i) and Reg_W_i = '1')  THEN
+
     	Memoria_ram(to_integer(unsigned(C_i))) <= W_c_i; 
-   	END IF;	 
+
   END IF;
 END PROCESS Registros;
+
+  R_a_o <= Memoria_ram(to_integer(unsigned(A_i)));      
+  R_b_o <= Memoria_ram(to_integer(unsigned(B_i)));
+
 END ARCHITECTURE Behavioral; -- Of entity bank_reg
 
  
