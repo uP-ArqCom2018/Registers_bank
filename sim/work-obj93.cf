@@ -1,7 +1,0 @@
-v 4
-file . "../test/bank_reg_tb.vhd" "9314588ad09aa44804fd6c976b994e034997e710" "20180616211958.426":
-  entity bank_reg_tb at 3( 41) + 0 on 21;
-  architecture behavioral of bank_reg_tb at 11( 169) + 0 on 22;
-file . "../src/bank_reg.vhd" "71eb0722f16957d12c3bfb5b4661b62daad4e806" "20180616211408.884":
-  entity bank_reg at 3( 114) + 0 on 11;
-  architecture behavioral of bank_reg at 25( 974) + 0 on 12;
