@@ -31,7 +31,11 @@ BEGIN
 
 Registros : PROCESS (CLK_i,C_i,Reg_W_i,W_c_i) IS
 BEGIN
-  IF (rising_edge(CLK_i) and Reg_W_i = '1')  THEN
+  IF RST_i = '0' then
+  
+    Memoria_ram<= (OTHERS=>std_logic_vector(to_unsigned(0,n_reg)));
+
+  ELSIF (rising_edge(CLK_i) and Reg_W_i = '1')  THEN
 
     	Memoria_ram(to_integer(unsigned(C_i))) <= W_c_i; 
 
