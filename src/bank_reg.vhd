@@ -14,8 +14,8 @@ ENTITY bank_reg IS
       B_i : IN     std_logic_vector(bit_dir_reg-1 downto 0);
       C_i : IN     std_logic_vector(bit_dir_reg-1 downto 0);    
       Reg_W_i: IN		std_logic;
-      -- CLK_i : IN     std_logic;  -- Se propone eliminar el reloj, ya que registra las entradas y no permite que el uP funcione en un solo clock por instruccion
       RST_i: IN std_logic;
+      CLK_i : IN     std_logic;  -- Se propone eliminar el reloj, ya que registra las entradas y no permite que el uP funcione en un solo clock por instruccion
       W_c_i : IN     std_logic_vector(n_reg-1 downto 0);
       R_a_o : OUT    std_logic_vector(n_reg-1 downto 0);
       R_b_o : OUT    std_logic_vector(n_reg-1 downto 0)
