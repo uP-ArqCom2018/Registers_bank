@@ -3,9 +3,15 @@
 
 #-----------------------------
 
-# Programa que crea automaticamente los archivos Manifest.py de hdl para ghdl y gtkwave.
+# Programa para crear automaticamente los archivos Manifest.py para hdlmake, usando ghdl y gtkwave.
+
+# Si se ejecuta sin argumentos, se crean los archivos Manifest.py en las carpetas correspondientes.
+# Si se utiliza el comando "-e" se realiza la compilacion y simulacion automaticamente. -> user@ ./auto.py -e
+# Si se utiliza el comando "-b" se borran los archivos creados para dejar limpio el espacio de trabajo.
+# Si se utiliza el comando "--help" o "-h" se muestra la ayuda del programa
 
 # Se debe organizar el proyecto de la siguiete manera, respetando las capetas.
+
 # Proyecto
 # |__ auto.py
 # |__ src
@@ -16,13 +22,14 @@
 # |__ test
 #     |__ testbench.vhd
 #-----------------------------
+
 # En la carpeta sim se generan los archivos relacionados a la simulacion.
 # En la carpeta src se deben guardar los archivos fuente.
 # En la carpeta test se debe guardar el testbench.
 
 import os
 import sys 
-import subprocess, shlex
+
 
 # En src se deben colocar los nombres de los archivos fuente sin extension 
 src = ['bank_reg']
@@ -39,8 +46,6 @@ f.write('files = [ \n ')
 
 for i in range(0,len(src)-1):
 	f.write('"%s.vhd", '%(src[i]))
-	#f.write(src[i]+'.vhd')
-	#f.write('", ') 
 
 f.write('"')
 f.write(src[len(src)-1]+'.vhd')
@@ -65,4 +70,24 @@ f.write('\nmodules = {\n  "local" : [ "../test" ],\n}\n')
 
 f.close()
 
-#subprocess.call(shlex.split('cd ..'))
+# Comando -e: realiza la compilacion y la simulacion
+if len(sys.argv) > 1 and sys.argv[1] == '-e':
+    os.chdir('sim')
+    os.system('hdlmake')
+    os.system('make')
+
+# Comando -b: borra los archivos creados, externos al disenio
+if len(sys.argv) > 1 and sys.argv[1] == '-b':
+
+	os.system('rm -r sim')
+	os.system('rm src/Manifest.py')
+	os.system('rm test/Manifest.py')
+
+# Comando -h o --help
+if len(sys.argv) > 1 and (sys.argv[1] == '--help' or sys.argv[1] == '-h'):
+	print('\n\t\t\t\t----- auto.py -----')
+	print('\nDebe abrir auto.py con un editor de textos, y agregar los codigos fuente y testbench en las variables src y tb respectivamente')
+	print('\n \t \t \t ARGUMENTOS')
+	print('\nSin argumentos: Crea los archivos Manifest.py y la carpeta sim para la simulacion')
+	print('\n-e : Realiza la ejecucion de la compilacion y la simulacion automaticamente')
+	print('\n-b : Borra los archivos y carpetas creadas')

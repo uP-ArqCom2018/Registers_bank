@@ -52,7 +52,7 @@ end process;
 
 
 stimul_proc: process
-  variable errors: boolean := false;  -- variable para detectar errores
+  variable errors1,errors2: boolean := false;  -- variable para detectar errores
   --variable R_a_aux, R_b_aux: std_logic_vector(n_reg-1 downto 0); -- variables que se usan en stimul_proc
 begin
   -- Se coloca un valor conocido en los registros.
@@ -63,7 +63,7 @@ begin
 	
 		C_i <= std_logic_vector(to_unsigned(i,bit_dir_reg));	-- Direccion 
   		W_c_i <= std_logic_vector(to_unsigned(i,n_reg));	-- Valor que se guarda en el banco de registros (del 0 al 31)
-  		wait for 10 ns; -- espera un periodo de clock y vuelve a escribir
+  		wait for 15 ns; -- espera un periodo de clock y vuelve a escribir
   	
   	END LOOP;
   -- Aqui ya se encuentran los valores almacenados en el banco de registros	
@@ -77,64 +77,75 @@ begin
     	R_a_aux <= std_logic_vector(to_unsigned(i,n_reg)); -- Se almacena el valor que deberia haber en la salida cuando se lee el registro
    		R_b_aux <= std_logic_vector(to_unsigned(i,n_reg));
     
-    	wait for 10 ns;
+    	wait for 15 ns;
     
     
     if R_a_o /= R_a_aux then -- se controla que el valor leido sea correcto
     	 assert false
     	 report "ERROR EN LECTURA DE A";
-    	 errors := true;
+    	 errors1 := true;
   	end if;
   	
   	if R_b_o /= R_b_aux then -- se controla que el valor leido sea correcto
     	 assert false
     	 report "ERROR EN LECTURA DE B";
-    	 errors := true;
+    	 errors1 := true;
   	end if;
-  	wait for 10 ns;
+  	wait for 15 ns;
   		
   END LOOP;
  
-  -- Reportar si hubo errores
-	assert not errors 
-	report "Fallo el testeo"
-	severity note;
-
-	assert errors
-  	report "Paso el testeo"
-  	severity note;
   
   	RST_i<='0'; --Reseteo el banco y compruebo
   	
-  	wait for 10 ns;
+  	wait for 15 ns;
   	
   	RST_i<='1';
+
+    R_a_aux <= std_logic_vector(to_unsigned(0,n_reg)); -- Se almacena el valor 0, que deberia haber en la salida cuando se lee el registro
+    R_b_aux <= std_logic_vector(to_unsigned(0,n_reg));    
+
   
 	FOR i IN 0 TO 2**bit_dir_reg-1 LOOP
     
     	A_i <= std_logic_vector(to_unsigned(i,bit_dir_reg)); -- direccion que se quiere leer
     	B_i <= std_logic_vector(to_unsigned(i,bit_dir_reg)); -- direccion que se quiere leer
-  
-    	R_a_aux <= std_logic_vector(to_unsigned(i,n_reg)); -- Se almacena el valor que deberia haber en la salida cuando se lee el registro
-   		R_b_aux <= std_logic_vector(to_unsigned(i,n_reg));  		
+      
+      wait for 15 ns;
 
     if R_a_o /= R_a_aux then -- se controla que el valor leido sea correcto
     	 assert false
     	 report "ERROR EN LECTURA DE A, POST-RESET";
-    	 errors := true;
+    	 errors2 := true;
   	end if;
   	
   	if R_b_o /= R_b_aux then -- se controla que el valor leido sea correcto
     	 assert false
     	 report "ERROR EN LECTURA DE B, POST-RESET";
-    	 errors := true;
+    	 errors2 := true;
   	end if;
-  	
-  	wait for 10 ns;  		 		
+  			 		
   	
   END LOOP;
+
+  -- Reportar si hubo errores
+  assert not errors1 
+  report "Fallo el testeo - antes de reset"
+  severity note;
+
+  assert errors1
+    report "Paso el testeo - antes de reset"
+    severity note;
+
   
-    
+    -- Reportar si hubo errores
+  assert not errors2 
+  report "Fallo el testeo - post-reset"
+  severity note;
+
+  assert errors2
+    report "Paso el testeo - post reset"
+    severity note;
   wait;
 
 end process;
