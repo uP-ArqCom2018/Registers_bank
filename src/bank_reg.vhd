@@ -29,19 +29,18 @@ signal Memoria_ram: ram_memory;
 	
 BEGIN
 
-Registros : PROCESS (RST_i,A_i,B_i,C_i,Reg_W_i,W_c_i) IS
+Registros : PROCESS (CLK_i,C_i,Reg_W_i,W_c_i) IS
 BEGIN
-  IF (RST_i='0')  THEN
-      Memoria_ram<= (OTHERS=>std_logic_vector(to_unsigned(0,n_reg)));
-  ELSE
-	R_a_o <= Memoria_ram(to_integer(unsigned(A_i)));  	  
-    R_b_o <= Memoria_ram(to_integer(unsigned(B_i)));
-    
-    IF (Reg_W_i = '1') THEN
+  IF (rising_edge(CLK_i) and Reg_W_i = '1')  THEN
+
     	Memoria_ram(to_integer(unsigned(C_i))) <= W_c_i; 
-   	END IF;	 
+
   END IF;
 END PROCESS Registros;
+
+  R_a_o <= Memoria_ram(to_integer(unsigned(A_i)));      
+  R_b_o <= Memoria_ram(to_integer(unsigned(B_i)));
+
 END ARCHITECTURE Behavioral; -- Of entity bank_reg
 
  
