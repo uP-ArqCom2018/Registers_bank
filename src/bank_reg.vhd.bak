@@ -25,7 +25,7 @@ END ENTITY bank_reg;
 ARCHITECTURE Behavioral OF bank_reg IS
  -- Declaramos una matriz como memoria       
 TYPE ram_memory IS ARRAY ( 2**bit_dir_reg-1 downto 0 ) OF std_logic_vector(n_reg-1 downto 0);
-signal Memoria_ram: ram_memory:=(others=>x"0000000000000000");
+signal Memoria_ram: ram_memory;
 	
 BEGIN
 
