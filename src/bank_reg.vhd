@@ -35,12 +35,13 @@ BEGIN
   
     Memoria_ram<= (OTHERS=>std_logic_vector(to_unsigned(0,n_reg)));
 
-  ELSIF (rising_edge(CLK_i) and Reg_W_i = '1')  THEN
+  ELSIF (rising_edge(CLK_i) and Reg_W_i = '1' and to_integer(unsigned(C_i))/=0)  THEN
 
     	Memoria_ram(to_integer(unsigned(C_i))) <= W_c_i; 
 
   END IF;
 END PROCESS Registros;
+
 
   R_a_o <= Memoria_ram(to_integer(unsigned(A_i)));      
   R_b_o <= Memoria_ram(to_integer(unsigned(B_i)));
